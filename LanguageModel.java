@@ -100,8 +100,8 @@ public class LanguageModel {
             if (CharDataMap.get(initialWindow) == null) {
                 return geneString;
             }
-            geneString += getRandomChar(CharDataMap.get(initialWindow));
-            initialWindow = geneString.substring(geneString.length() - windowLength);
+            char c = getRandomChar(CharDataMap.get(initialWindow));
+            initialWindow = geneString.substring(1) + c;
         }
         return geneString;
 	}
