@@ -92,20 +92,20 @@ public class LanguageModel {
 	 */
 	public String generate(String initialText, int textLength) {
         String geneString = initialText;
-		if (initialText.length() < windowLength) {
+        if (initialText.length() < windowLength) {
             return initialText;
         }
-        String initialWindow = initialText.substring(initialText.length() - windowLength);
-
+        String window = initialText.substring(initialText.length() - windowLength);
         while (geneString.length() < textLength) {
-            if (CharDataMap.get(initialWindow) == null) {
-                return geneString;
-            }
-            char c = getRandomChar(CharDataMap.get(initialWindow));
-            initialWindow = initialWindow.substring(1) + c;
+            List probs = CharDataMap.get(window);
+            if (probs == null) return geneString;
+            char next = getRandomChar(probs);
+            geneString += next;
+            window = window.substring(1) + next;
         }
         return geneString;
-	}
+    }
+
 
     /** Returns a string representing the map of this language model. */
 	public String toString() {
