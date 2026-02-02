@@ -96,12 +96,13 @@ public class LanguageModel {
             return initialText;
         }
         String initialWindow = initialText.substring(initialText.length() - windowLength);
+
         while (geneString.length() < textLength) {
             if (CharDataMap.get(initialWindow) == null) {
                 return geneString;
             }
             char c = getRandomChar(CharDataMap.get(initialWindow));
-            initialWindow = geneString.substring(1) + c;
+            initialWindow = initialWindow.substring(1) + c;
         }
         return geneString;
 	}
