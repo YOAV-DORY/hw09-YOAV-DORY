@@ -39,13 +39,13 @@ public class List {
     
     /** GIVE Textual representation of this list. */
     public String toString() {
-        String str = "";
+        String str = "(";
         Node current = first;
         while (current != null) {
             str += current.toString() + " ";
             current = current.next;
         }
-        return str;
+        return str + ")";
     }
 
     /** Returns the index of the first CharData object in this list
