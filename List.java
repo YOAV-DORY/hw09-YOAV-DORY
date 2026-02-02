@@ -106,7 +106,7 @@ public class List {
         Node current = first;
         while (n < index) {
             current = current.next;
-            n++;
+            n++;//
         }
         return current.cp;
     }

@@ -123,7 +123,7 @@ int generatedTextLength = Integer.parseInt(args[2]);
 Boolean randomGeneration = args[3].equals("random");
 String fileName = args[4];
 // Create the LanguageModel object
-LanguageModel lm;
+LanguageModel lm;//
 if (randomGeneration)
 lm = new LanguageModel(windowLength);
 else
