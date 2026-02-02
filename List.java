@@ -42,7 +42,8 @@ public class List {
         String str = "(";
         Node current = first;
         while (current != null) {
-            str += current.toString() + " ";
+            if(current.next != null) str += current.toString() + " ";
+            else str += current.toString();
             current = current.next;
         }
         return str + ")";
