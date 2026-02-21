@@ -56,7 +56,7 @@ public class List {
         Node current = first;
         int index = 0;
         while (current != null) {
-            if (current.cp.equals(chr)) {
+            if (current.cp.chr == chr) {
                 return index;
             }
             current = current.next;
@@ -88,12 +88,12 @@ public class List {
     public boolean remove(char chr) {
         Node prev = null;
         Node current = first;
-        while (current != null && !current.cp.equals(chr)) {
+        while (current != null && current.cp.chr != chr) {
             prev = current;
             current = current.next;
         }
-        if(current == null) return false;
-        if(prev == null) first = first.next;
+        if (current == null) return false;
+        if (prev == null) first = first.next;
         else prev.next = current.next;
         size--;
         return true;

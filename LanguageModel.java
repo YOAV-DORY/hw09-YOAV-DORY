@@ -33,24 +33,30 @@ public class LanguageModel {
 
     /** Builds a language model from the text in the given file (the corpus). */
 	public void train(String fileName) {
-		String window = "";
-        char c;
-        In in = new In(fileName);
-        for(int i = 0; i < windowLength; i++) window += in.readChar();
-        while (!in.isEmpty()) {
-            c = in.readChar();
-            List probs = CharDataMap.get(window);
-            if (probs == null) {
-                List wprobs = new List();
-                CharDataMap.put(window, wprobs);
-                probs = wprobs;
-            }
-            probs.update(c);
-            window = window.substring(1) + c;
+    In in = new In(fileName);
+    String text = "";
+    while (!in.isEmpty()) {
+        text += in.readChar();
+    }
+    if (text.length() < windowLength) {
+        return;
+    }
+    for (int i = 0; i <= text.length() - windowLength - 1; i++) {
+        String window = text.substring(i, i + windowLength);
+        char next = text.charAt(i + windowLength);
+        List probs = CharDataMap.get(window);
+        if (probs == null) {
+            probs = new List();
+            CharDataMap.put(window, probs);
         }
-        for (List probs : CharDataMap.values())
-            if(probs != null) calculateProbabilities(probs);
-	}
+        probs.update(next);
+    }
+    for (List probs : CharDataMap.values()) {
+        if (probs != null) {
+            calculateProbabilities(probs);
+        }
+    }
+}
 
     // Computes and sets the probabilities (p and cp fields) of all the
 	// characters in the given list. */
@@ -91,20 +97,23 @@ public class LanguageModel {
 	 * @return the generated text
 	 */
 	public String generate(String initialText, int textLength) {
-        String geneString = initialText;
-        if (initialText.length() < windowLength) {
-            return initialText;
-        }
-        String window = initialText.substring(initialText.length() - windowLength);
-        while (geneString.length() < textLength) {
-            List probs = CharDataMap.get(window);
-            if (probs == null) return geneString;
-            char next = getRandomChar(probs);
-            geneString += next;
-            window = window.substring(1) + next;
-        }
-        return geneString;
+    String geneString = initialText;
+    if (initialText.length() < windowLength) {
+        return initialText;
     }
+
+    String window = initialText.substring(initialText.length() - windowLength);
+    while (geneString.length() < textLength) {
+        List probs = CharDataMap.get(window);
+        if (probs == null) {
+            return geneString; 
+        }
+        char c = getRandomChar(probs);
+        geneString += c;
+        window = geneString.substring(geneString.length() - windowLength);
+    }
+    return geneString;
+}
 
 
     /** Returns a string representing the map of this language model. */
